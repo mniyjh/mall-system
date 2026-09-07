@@ -32,3 +32,6 @@ tools/
 
 # Word 临时锁定文件
 ~$*
+
+# Maven 构建产物
+target/
