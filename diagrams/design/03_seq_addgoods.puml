@@ -1,0 +1,23 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+
+actor "运营人员" as op
+participant "商品管理界面" as view
+participant "GoodsController" as ctrl
+participant "GoodsService" as svc
+participant "GoodsMapper" as dao
+database "数据库" as db
+
+op -> view : 录入商品信息并提交
+view -> ctrl : addGoods(goods)
+ctrl -> svc : addGoods(goods)
+svc -> dao : insert(goods)
+dao -> db : INSERT 商品记录
+db --> dao : 保存成功
+dao --> svc : 返回保存结果
+svc --> ctrl : 返回处理结果
+ctrl --> view : 返回处理结果
+view --> op : 显示"添加成功"
+@enduml

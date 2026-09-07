@@ -1,0 +1,105 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+skinparam linetype ortho
+hide empty members
+
+entity "商品分类" as category {
+  * category_id : bigint <<PK>>
+  --
+  category_name : varchar(50)
+  parent_id : bigint
+  sort : int
+}
+
+entity "商品" as goods {
+  * goods_id : bigint <<PK>>
+  --
+  goods_name : varchar(100)
+  category_id : bigint <<FK>>
+  price : decimal(10,2)
+  stock : int
+  image : varchar(200)
+  description : text
+  status : tinyint
+  create_time : datetime
+}
+
+entity "购物车" as cart {
+  * cart_id : bigint <<PK>>
+  --
+  user_id : bigint
+  goods_id : bigint <<FK>>
+  quantity : int
+  create_time : datetime
+}
+
+entity "订单" as orders {
+  * order_id : bigint <<PK>>
+  --
+  order_no : varchar(50)
+  user_id : bigint
+  receiver_name : varchar(50)
+  receiver_phone : varchar(20)
+  receiver_address : varchar(200)
+  total_amount : decimal(10,2)
+  status : tinyint
+  create_time : datetime
+  pay_time : datetime
+  ship_time : datetime
+}
+
+entity "订单明细" as order_item {
+  * item_id : bigint <<PK>>
+  --
+  order_id : bigint <<FK>>
+  goods_id : bigint <<FK>>
+  goods_name : varchar(100)
+  price : decimal(10,2)
+  quantity : int
+  subtotal : decimal(10,2)
+}
+
+entity "评价" as review {
+  * review_id : bigint <<PK>>
+  --
+  order_id : bigint <<FK>>
+  goods_id : bigint <<FK>>
+  user_id : bigint
+  rating : tinyint
+  content : varchar(500)
+  create_time : datetime
+}
+
+entity "售后" as after_sale {
+  * sale_id : bigint <<PK>>
+  --
+  order_id : bigint <<FK>>
+  goods_id : bigint <<FK>>
+  user_id : bigint
+  type : tinyint
+  reason : varchar(200)
+  description : varchar(500)
+  status : tinyint
+  apply_time : datetime
+  handle_time : datetime
+}
+
+entity "物流" as shipping {
+  * shipping_id : bigint <<PK>>
+  --
+  order_id : bigint <<FK>>
+  tracking_no : varchar(50)
+  company : varchar(50)
+  ship_time : datetime
+}
+
+category ||--o{ goods : 包含
+goods ||--o{ cart : 被加入
+orders ||--o{ order_item : 包含
+goods ||--o{ order_item : 被购买
+orders ||--|| shipping : 对应
+orders ||--o{ review : 产生
+orders ||--o{ after_sale : 产生
+@enduml

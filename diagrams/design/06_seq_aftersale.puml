@@ -1,0 +1,23 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+
+actor "买家" as buyer
+participant "售后申请界面" as view
+participant "AfterSaleController" as ctrl
+participant "AfterSaleService" as svc
+participant "AfterSaleMapper" as dao
+database "数据库" as db
+
+buyer -> view : 选择售后商品、类型与原因并提交
+view -> ctrl : applyAfterSale(saleInfo)
+ctrl -> svc : applyAfterSale(saleInfo)
+svc -> dao : insert(afterSale)
+dao -> db : INSERT 售后申请
+db --> dao : 保存成功
+dao --> svc : 返回售后申请
+svc --> ctrl : 返回售后申请
+ctrl --> view : 返回售后申请
+view --> buyer : 显示"申请提交成功"
+@enduml

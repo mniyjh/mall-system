@@ -29,3 +29,6 @@ bin/
 .DS_Store
 # 构建工具（PlantUML jar 较大，不入库）
 tools/
+
+# Word 临时锁定文件
+~$*

@@ -1,0 +1,28 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+
+actor "买家" as buyer
+participant "订单界面" as view
+participant "OrderController" as ctrl
+participant "OrderService" as svc
+participant "GoodsMapper" as gdao
+participant "OrderMapper" as odao
+database "数据库" as db
+
+buyer -> view : 确认购物车商品与收货地址并提交
+view -> ctrl : createOrder(orderInfo)
+ctrl -> svc : createOrder(orderInfo)
+svc -> gdao : checkStock(goodsId, quantity)
+gdao -> db : SELECT 商品库存
+db --> gdao : 库存充足
+gdao --> svc : 校验通过
+svc -> odao : insert(order, orderItems)
+odao -> db : INSERT 订单及明细
+db --> odao : 保存成功
+odao --> svc : 返回订单
+svc --> ctrl : 返回订单
+ctrl --> view : 返回订单
+view --> buyer : 显示订单与支付信息
+@enduml

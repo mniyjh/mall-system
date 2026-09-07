@@ -1,0 +1,29 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+skinparam linetype ortho
+hide empty members
+
+entity "角色" as role {
+  * role_id : bigint <<PK>>
+  --
+  role_name : varchar(50)
+  role_desc : varchar(200)
+}
+
+entity "用户" as user {
+  * user_id : bigint <<PK>>
+  --
+  username : varchar(50)
+  password : varchar(100)
+  nickname : varchar(50)
+  phone : varchar(20)
+  email : varchar(50)
+  role_id : bigint <<FK>>
+  status : tinyint
+  create_time : datetime
+}
+
+role ||--o{ user : 拥有
+@enduml

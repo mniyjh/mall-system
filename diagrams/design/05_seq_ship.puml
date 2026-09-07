@@ -1,0 +1,30 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+
+actor "运营人员" as op
+participant "发货管理界面" as view
+participant "OrderController" as ctrl
+participant "OrderService" as svc
+participant "OrderMapper" as odao
+participant "ShippingMapper" as sdao
+database "数据库" as db
+
+op -> view : 选择待发货订单并登记物流单号
+view -> ctrl : ship(orderId, trackingNo)
+ctrl -> svc : ship(orderId, trackingNo)
+svc -> odao : selectById(orderId)
+odao -> db : SELECT 订单
+db --> odao : 返回订单
+odao --> svc : 返回订单
+svc -> sdao : insert(shipping)
+sdao -> db : INSERT 物流信息
+db --> sdao : 保存成功
+svc -> odao : updateStatus(orderId, 已发货)
+odao -> db : UPDATE 订单状态
+db --> odao : 更新成功
+svc --> ctrl : 返回发货结果
+ctrl --> view : 返回发货结果
+view --> op : 显示"发货成功"
+@enduml

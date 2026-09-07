@@ -1,0 +1,121 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #FEFEFE
+  BorderColor #2C3E50
+}
+
+class Role {
+  - roleId : Long
+  - roleName : String
+  - roleDesc : String
+}
+
+class User {
+  - userId : Long
+  - username : String
+  - password : String
+  - nickname : String
+  - phone : String
+  - email : String
+  - status : Integer
+  - roleId : Long
+  - createTime : DateTime
+}
+
+class Category {
+  - categoryId : Long
+  - categoryName : String
+  - parentId : Long
+  - sort : Integer
+}
+
+class Goods {
+  - goodsId : Long
+  - goodsName : String
+  - categoryId : Long
+  - price : BigDecimal
+  - stock : Integer
+  - image : String
+  - description : String
+  - status : Integer
+  - createTime : DateTime
+}
+
+class Cart {
+  - cartId : Long
+  - userId : Long
+  - goodsId : Long
+  - quantity : Integer
+  - createTime : DateTime
+}
+
+class Order {
+  - orderId : Long
+  - orderNo : String
+  - userId : Long
+  - receiverName : String
+  - receiverPhone : String
+  - receiverAddress : String
+  - totalAmount : BigDecimal
+  - status : Integer
+  - createTime : DateTime
+  - payTime : DateTime
+  - shipTime : DateTime
+}
+
+class OrderItem {
+  - itemId : Long
+  - orderId : Long
+  - goodsId : Long
+  - goodsName : String
+  - price : BigDecimal
+  - quantity : Integer
+  - subtotal : BigDecimal
+}
+
+class Review {
+  - reviewId : Long
+  - orderId : Long
+  - goodsId : Long
+  - userId : Long
+  - rating : Integer
+  - content : String
+  - createTime : DateTime
+}
+
+class AfterSale {
+  - saleId : Long
+  - orderId : Long
+  - goodsId : Long
+  - userId : Long
+  - type : Integer
+  - reason : String
+  - description : String
+  - status : Integer
+  - applyTime : DateTime
+  - handleTime : DateTime
+}
+
+class Shipping {
+  - shippingId : Long
+  - orderId : Long
+  - trackingNo : String
+  - company : String
+  - shipTime : DateTime
+}
+
+Role "1" -- "n" User : 拥有
+User "1" -- "n" Cart : 加入
+User "1" -- "n" Order : 下单
+Category "1" -- "n" Goods : 包含
+Goods "1" -- "n" Cart : 被加入
+Order "1" -- "n" OrderItem : 包含
+Goods "1" -- "n" OrderItem : 被购买
+Order "1" -- "1" Shipping : 对应
+Order "1" -- "n" Review : 产生
+Order "1" -- "n" AfterSale : 产生
+@enduml

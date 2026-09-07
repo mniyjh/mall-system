@@ -1,0 +1,34 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+skinparam rectangle {
+  BackgroundColor #F4F6F7
+  BorderColor #2C3E50
+}
+skinparam packageStyle rectangle
+
+rectangle "表现层（浏览器）" as ui {
+  rectangle "前台（买家）\n商品浏览 / 购物车 / 下单 / 收货 / 评价 / 售后" as ui_buyer
+  rectangle "后台（管理员 / 运营人员）\n用户管理 / 角色管理 / 商品管理 / 订单管理 / 发货 / 售后管理" as ui_admin
+}
+
+rectangle "业务逻辑层（服务端）" as service {
+  rectangle "用户服务" as s1
+  rectangle "商品服务" as s2
+  rectangle "订单服务" as s3
+  rectangle "售后服务" as s4
+}
+
+rectangle "数据访问层" as dao {
+  rectangle "Mapper 数据访问接口" as d1
+}
+
+rectangle "数据层" as db {
+  database "MySQL 数据库" as mysql
+}
+
+ui --> service : HTTP 请求
+service --> dao : 方法调用
+dao --> db : JDBC / MyBatis
+@enduml
