@@ -11,6 +11,7 @@ from docx.text.paragraph import Paragraph
 BASE = r"D:\20260907实训\商城系统\goods"
 SRC = os.path.join(BASE, "docs", "需求分析规格说明书.docx")
 OUT = os.path.join(BASE, "docs", "需求分析规格说明书-完成版.docx")
+OUT_TMP = os.path.join(BASE, "docs", "需求分析规格说明书-完成版-临时.docx")
 DIAG = os.path.join(BASE, "diagrams")
 
 doc = docx.Document(SRC)
@@ -112,6 +113,31 @@ UC_DESC = [
             ("后置条件", "售后申请提交成功，售后申请处于待处理状态。"),
         ],
     },
+]
+
+DOC_PURPOSE = ("本文档旨在明确商城系统的功能需求与非功能需求，界定系统的用户角色、用例及核心业务流程，"
+               "为后续的系统设计、开发与测试提供依据，同时作为项目相关方沟通与评审的统一标准。")
+
+DOC_SCOPE = ("本文档描述了商城系统的需求，包括产品介绍、面向的用户群体、应遵循的标准与规范、功能性需求"
+             "（四大业务流程、用例清单、用例图、用例描述）以及非功能性需求。本文档适用于商城系统的需求分析"
+             "阶段，涵盖系统默认单一商户场景下的管理员、运营人员、买家三类角色，不涉及系统的具体实现技术与部署方案。")
+
+UI_REQS = [
+    ("界面风格", "整体界面简洁、美观，风格统一，符合主流电商网站的设计习惯"),
+    ("页面布局", "前台采用商品展示、分类导航与搜索布局；后台管理采用左侧菜单与内容区布局"),
+    ("导航设计", "导航层级清晰，用户可在三步内到达目标功能页面"),
+    ("操作提示", "关键操作均有明确的结果提示，操作失败时给出具体原因"),
+    ("输入校验", "所有输入项均有格式校验，必填项有醒目标识"),
+    ("列表分页", "商品、订单等列表数据支持分页显示，每页显示数量合理"),
+]
+
+TERMS = [
+    ("SRS", "Software Requirements Specification，软件需求规格说明书，本文档即属于此类文档"),
+    ("B/S", "Browser/Server，浏览器/服务器架构，用户通过浏览器访问并操作系统"),
+    ("用例（Use Case）", "描述参与者与系统之间一次交互的功能单元"),
+    ("活动图（Activity Diagram）", "描述业务流程中各项活动及其流转关系的图形化表示"),
+    ("参与者（Actor）", "与系统发生交互的外部角色，本系统中指管理员、运营人员、买家"),
+    ("商城系统", "本文档所描述的网上商品交易系统，默认仅存在一家商户"),
 ]
 
 # ================= 工具函数 =================
@@ -249,5 +275,43 @@ for desc in UC_DESC:
     move_table_after(tbl, cap)
     cur = tbl._tbl
 
-doc.save(OUT)
-print("saved:", OUT)
+# ================= 0.1 文档目的 / 0.2 文档范围 =================
+p_01 = find_para("0.1 文档目的")
+p_02 = find_para("0.2 文档范围")
+insert_para_after(p_01._p, DOC_PURPOSE)
+insert_para_after(p_02._p, DOC_SCOPE)
+
+# ================= 5.1 用户界面需求 =================
+ui_tbl = None
+for t in doc.tables:
+    if (t.rows and t.rows[0].cells[0].text.strip() == "需求名称"
+            and len(t.rows) > 1 and t.rows[1].cells[0].text.strip() == ""):
+        ui_tbl = t
+        break
+assert ui_tbl is not None, "未找到用户界面需求空表"
+for i, (name, detail) in enumerate(UI_REQS):
+    row = ui_tbl.rows[i + 1]
+    _set_cell(row.cells[0], name)
+    _set_cell(row.cells[1], detail)
+
+# ================= 0.5 术语与缩写解释 =================
+term_tbl = None
+for t in doc.tables:
+    if t.rows and "缩写" in t.rows[0].cells[0].text:
+        term_tbl = t
+        break
+assert term_tbl is not None, "未找到术语表"
+have = len(term_tbl.rows) - 1  # 去掉表头
+for _ in range(len(TERMS) - have):
+    term_tbl.add_row()
+for i, (abbr, desc) in enumerate(TERMS):
+    row = term_tbl.rows[i + 1]
+    _set_cell(row.cells[0], abbr)
+    _set_cell(row.cells[1], desc)
+
+try:
+    doc.save(OUT)
+    print("saved:", OUT)
+except PermissionError:
+    doc.save(OUT_TMP)
+    print("原文件被占用，已保存到临时文件:", OUT_TMP)
