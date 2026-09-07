@@ -1,0 +1,30 @@
+@startuml
+left to right direction
+skinparam defaultFontName "Noto Sans SC"
+skinparam actorStyle hollow
+skinparam shadowing false
+skinparam dpi 150
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #2C3E50
+}
+
+actor "运营人员" as Operator
+rectangle "商城系统" {
+  usecase "添加商品" as UC3
+  usecase "修改商品" as UC4
+  usecase "上架商品" as UC5
+  usecase "下架商品" as UC6
+  usecase "查询订单" as UC7
+  usecase "发货" as UC8
+  usecase "处理售后" as UC9
+}
+Operator --> UC3
+Operator --> UC4
+Operator --> UC5
+Operator --> UC6
+Operator --> UC7
+Operator --> UC8
+Operator --> UC9
+@enduml

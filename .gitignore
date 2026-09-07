@@ -27,3 +27,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+# 构建工具（PlantUML jar 较大，不入库）
+tools/

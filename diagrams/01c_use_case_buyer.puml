@@ -1,0 +1,28 @@
+@startuml
+left to right direction
+skinparam defaultFontName "Noto Sans SC"
+skinparam actorStyle hollow
+skinparam shadowing false
+skinparam dpi 150
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #2C3E50
+}
+
+actor "买家" as Buyer
+rectangle "商城系统" {
+  usecase "查询商品" as UC10
+  usecase "添加到购物车" as UC11
+  usecase "下单" as UC12
+  usecase "确认收货" as UC13
+  usecase "评价商品" as UC14
+  usecase "申请售后" as UC15
+}
+Buyer --> UC10
+Buyer --> UC11
+Buyer --> UC12
+Buyer --> UC13
+Buyer --> UC14
+Buyer --> UC15
+@enduml

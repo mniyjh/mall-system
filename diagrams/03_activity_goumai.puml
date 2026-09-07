@@ -1,0 +1,21 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+skinparam activity {
+  BackgroundColor #FEFEFE
+  BorderColor #2C3E50
+  DiamondBackgroundColor #FEF9E7
+  DiamondBorderColor #B7950B
+}
+start
+repeat
+  :查询商品;
+  :选择商品;
+  :添加到购物车;
+repeat while (是否继续选购？) is (是) not (否)
+:提交订单;
+:完成支付;
+:订单生成;
+stop
+@enduml

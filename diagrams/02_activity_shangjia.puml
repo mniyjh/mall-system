@@ -1,0 +1,23 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+skinparam activity {
+  BackgroundColor #FEFEFE
+  BorderColor #2C3E50
+  DiamondBackgroundColor #FEF9E7
+  DiamondBorderColor #B7950B
+}
+start
+:录入商品信息;
+:提交商品信息;
+:校验商品信息;
+while (商品信息有误？) is (是)
+  :修改商品信息;
+  :重新提交商品信息;
+  :校验商品信息;
+endwhile (否)
+:商品上架;
+:商品设为可售状态;
+stop
+@enduml

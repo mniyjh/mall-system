@@ -1,0 +1,18 @@
+@startuml
+skinparam defaultFontName "Noto Sans SC"
+skinparam shadowing false
+skinparam dpi 150
+skinparam activity {
+  BackgroundColor #FEFEFE
+  BorderColor #2C3E50
+  DiamondBackgroundColor #FEF9E7
+  DiamondBorderColor #B7950B
+}
+start
+:查询待发货订单;
+:核对订单与商品信息;
+:打包商品;
+:登记物流单号;
+:订单设为已发货;
+stop
+@enduml
