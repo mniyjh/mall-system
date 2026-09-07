@@ -119,6 +119,7 @@ cart = CSS + """
 
 # ---------------- 4. 后台商品管理 ----------------
 admin_css = CSS + """
+<style>
 .layout{display:flex;height:100vh}
 .sidebar{width:200px;background:#263238;color:#fff;padding-top:10px;flex-shrink:0}
 .sidebar .logo{font-size:16px;font-weight:700;padding:14px 20px;border-bottom:1px solid #37474f}
@@ -128,6 +129,7 @@ admin_css = CSS + """
 .topbar{background:#fff;padding:14px 20px;border-bottom:1px solid #e8ecf1;display:flex;justify-content:space-between;align-items:center}
 .content{padding:20px}
 .panel{background:#fff;border-radius:8px;padding:16px}
+</style>
 """
 product_admin = admin_css + """
 <body>
